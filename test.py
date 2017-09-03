@@ -1,19 +1,3 @@
-# import pymysql
-# import datetime
-#
-# connection = pymysql.connect(host='222.73.68.52', user='lihm', passwd='mFze4Hba0fZtBvUChl1G', port=53307,
-#                              db='TopJet560Report', charset='utf8')
-#
-# # cur = connection.cursor().execute('''TopJet560Report.pr_listredbag_sendGoods(?,?,?,?)''', ['2017-08-15', '2017-08-16',
-# #                                   ' ', '2'])
-# cur = connection.cursor()
-# rv=  cur.execute('''SELECT * from allUser_newAuth where dt>=%s and dt <%s''',('2017-08-10', '2017-08-16'))
-#
-# result = cur.fetchall()
-# # data = [ {'idc': idc.name, 'address': idc.address,'manager': idc.contact,  'contacts':idc.phone}   for idc in IDC.query.all() ]?
-# data=[{'id':rv[2],'dt':rv[1].strftime('%Y-%m-%d')}  for rv in result]
-# print(data)
-
 
 import sqlite3
 import string
