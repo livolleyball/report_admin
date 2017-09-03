@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ECharts_bar1</title>
+
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.7.0/echarts.common.min.js"></script>
+    <!-- 引入jquery.js -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main"  style="height:500px;border:1px solid #ccc;padding:10px;"></div>
+
+    <script type="text/javascript">
+
+        var myChart = echarts.init(document.getElementById('main'));
+         // 显示标题，图例和空的坐标轴
+         myChart.setOption({
+             title: {
+                 text: '异步数据加载示例'
+             },
+             tooltip: {},
+             legend: {
+                 data:['销量']
+             },
+             xAxis: {
+                 data: []
+             },
+             yAxis: {},
+             series: [{
+                 name: '销量',
+                 type: 'bar',
+                 data: []
+             }]
+         });
+
+         myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+
+
+    $.post('/echarts/bar1').done(function (data) {
+        myChart.hideLoading(); // 隐藏加载动画
+
+        // 填入数据
+        myChart.setOption({
+            xAxis: {
+                data: data.name
+            },
+            series: [{
+                name: '销量', // 根据名字对应到相应的系列
+                data: data.amount.map(parseFloat) // 转化为数字（注意map）
+            }]
+        });
+    });
+
+    </script>
+
+</body>
+</html>

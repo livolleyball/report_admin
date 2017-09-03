@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ECharts_bubble_gradient</title>
+
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.7.0/echarts.common.min.js"></script>
+    <!-- 引入jquery.js -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"  style="height:500px;border:1px solid #ccc;padding:10px;"></div>
+
+<script type="text/javascript">
+
+    var myChart = echarts.init(document.getElementById('main'));
+    // 显示标题，图例和空的坐标轴
+
+
+    myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+
+
+    $.post('/echarts/bubble_gradient').done(function (data) {
+        myChart.hideLoading(); // 隐藏加载动画
+
+        // 填入数据
+        myChart.setOption({
+            backgroundColor: new echarts.graphic.RadialGradient(0, 0, 0, [{
+                offset: 0,
+                color: '#f7f8fa'
+            }, {
+                offset: 1,
+                color: '#cdd0d5'
+            }]),
+            title: {
+                text: '1900 与 2005 年各国家人均寿命与 GDP'
+            },
+            legend: {
+                right: 10,
+                data: ['1900', '2005']
+            },
+            xAxis: {
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                }
+            },
+            yAxis: {
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                scale: true
+            },
+            series: [{
+                name: '1900',
+                data: data[0],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[0])  ;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[2];
+                        },
+                        position: 'top'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(120, 36, 50, 0.5)',
+                        shadowOffsetY: 5,
+                        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                            offset: 0,
+                            color: 'rgb(251, 118, 123)'
+                        }, {
+                            offset: 1,
+                            color: 'rgb(204, 46, 72)'
+                        }])
+                    }
+                }
+            }, {
+                name: '2005',
+                data: data[1],
+                type: 'scatter',
+                symbolSize: function (data) {
+                    return Math.sqrt(data[0])  ;
+                },
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[2];
+                        },
+                        position: 'top'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(25, 100, 150, 0.5)',
+                        shadowOffsetY: 5,
+                        color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                            offset: 0,
+                            color: 'rgb(129, 227, 238)'
+                        }, {
+                            offset: 1,
+                            color: 'rgb(25, 183, 207)'
+                        }])
+                    }
+                }
+            }]
+        });
+    });
+
+</script>
+
+</body>
+</html>

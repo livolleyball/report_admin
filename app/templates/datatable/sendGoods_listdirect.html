@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+{{ super() }}
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+{% endblock %}
+{% block page_content %}
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+
+</div>
+
+<table id="example" class="display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>角色编号</th>
+        <th>角色代码</th>
+        <th>角色名称</th>
+        <th>备注</th>
+    </tr>
+    </thead>
+
+    {% for v in result %}
+    <tr>
+        <td>{{ v[0] }}</td>
+        <td>{{ v[1] }}</td>
+        <td>{{ v[2] }}</td>
+        <td>{{ v[3] }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+    </script>
+{% endblock %}

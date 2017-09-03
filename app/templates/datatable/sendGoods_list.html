@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分享红包明细</title>
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css">   -->
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <!--<script src="js/bootstrap.min.js"></script>-->
+</head>
+<body>
+
+<table id="example" class="display" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>角色编号</th>
+        <th>角色代码</th>
+
+    </tr>
+    </thead>
+
+</table>
+
+</body>
+
+<script>
+$(document).ready(function() {
+$('#example').DataTable({
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "sendGoods_list",
+        "type": "POST"
+    },
+    "columns": [
+            { "data": "id" },
+            { "data": "dt" }
+        ]}
+);
+});
+</script>
+</html>
