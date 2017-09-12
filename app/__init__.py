@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_babelex import Babel
 from config import config
 from flask_admin import Admin
-from app.Fadmin import CustomModelView, UserView,RoleView
+
 from flask_login import LoginManager
 
 # from app.models import Userlog,User
@@ -13,11 +13,20 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
-login_manager.login_view = 'auth.login'
+login_manager.login_view = 'home.login'
 babel = Babel()
-flask_admin = Admin()
-from app.models import Userlog, User,Auth,Role,ParentAuth
+from app.Fadmin import CustomModelView, UserView, RoleView,AuthAdmin,MyHomeView
+# flask_admin = Admin(name=u'后台管理系统')
+flask_admin = Admin(name=u'后台管理系统',index_view=MyHomeView( name='导航栏'),template_mode='bootstrap2')
 
+from app.models import Userlog, User, Auth, Role,Tree
+flask_admin.add_view(UserView(User,db.session,name=u'用户管理'))
+flask_admin.add_view(RoleView(Role, db.session,name=u'角色管理'))
+flask_admin.add_view(AuthAdmin(Auth, db.session,name=u'菜单管理'))
+models = [Userlog,Tree]
+for model in models:
+    flask_admin.add_view(
+        CustomModelView(model, db.session, category='Models'))
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -33,12 +42,8 @@ def create_app(config_name):
 
     # flask_admin.add_view(CustomView(name='Custom'))
     # Register view function `CustomModelView` into Flask-Admin
-    flask_admin.add_view(UserView(User, db.session))
-    flask_admin.add_view(RoleView(Role,db.session))
-    models = [Userlog,Auth,ParentAuth]
-    for model in models:
-        flask_admin.add_view(
-            CustomModelView(model, db.session, category='Models'))
+
+
 
     from app.home import home as home_blueprint
     # from app.datatable import datatable as datatable_blueprint

@@ -86,3 +86,8 @@ def pie():
 
     else:
         return render_template("echarts/pie.html")
+
+@echarts.route('/tree', methods=["GET", "POST"])
+def tree():
+    res = query_db("SELECT county,sum(age) amount from bubble_gradient group by county")
+    return jsonify("a")

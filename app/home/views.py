@@ -4,11 +4,12 @@ from . import home
 from .. import db
 from ..models import User
 from flask import render_template, redirect, url_for, flash
-from .forms import LoginFrom, ChangePasswordForm
+from .forms import LoginFrom, ChangePasswordForm,Quickwtf
 from werkzeug.security import generate_password_hash
 
 
 @home.route("/")
+@login_required
 def index():
     return render_template("index.html")
 
@@ -32,6 +33,11 @@ def logout():
     logout_user()
     flash('您已经退出')
     return redirect(url_for("home.login"))
+
+@home.route("/quickwtf/")
+def quickwtf():
+    form=Quickwtf()
+    return render_template('home/quickwtf.html',form=form)
 
 
 @home.route('/change-password', methods=['GET', 'POST'])
