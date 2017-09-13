@@ -1,10 +1,10 @@
 # coding:utf8
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request,flash
 from flask_admin import BaseView, expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Length, Email, equal_to, ValidationError, url
-from flask_login import current_user
+from flask_login import current_user,login_required
 from app.models import Auth
 
 
@@ -12,24 +12,40 @@ from app.models import Auth
 
 class MyHomeView(AdminIndexView):
     def is_accessible(self):
+        # if current_user.is_anonymous:
+        #     return redirect(url_for('home.login'))
         return current_user.is_admin
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect(url_for('home.login', next=request.url))
+        flash('admin 后台只对管理员开放')
+        return redirect(url_for('home.login'))
 
     @expose('/')
+    @login_required
     def index(self):
+        print(type(current_user.role.name))
+        print(type(current_user.name))
+
+        print(current_user.role.name)
+        print(current_user.role.name=='admin')
         return self.render("admin/baseadmin.html")
 
 
-class CustomModelView(ModelView):
+class AccessView(ModelView):
     """View function of Flask-Admin for Models page."""
+    def is_accessible(self):
+        # if current_user.is_anonymous:
+        #     return redirect(url_for('home.login'))
+        return current_user.is_admin
 
-    pass
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+        flash('admin 后台只对管理员开放')
+        return redirect(url_for('home.login'))
 
 
-class UserView(ModelView):
+class UserView(AccessView):
     column_descriptions = dict(
         name='First and Last name'
     )
@@ -62,15 +78,9 @@ class UserView(ModelView):
         # 调用用户模型中定义的set方法
         User.set_password(form.password.data)
 
-    def is_accessible(self):
-        return current_user.is_admin
-
-    def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
-        return redirect(url_for('home.login', next=request.url))
 
 
-class RoleView(ModelView):
+class RoleView(AccessView):
     # form_excluded_columns = ['users', ]
     column_labels = dict(
         name=u'角色名',
@@ -81,7 +91,7 @@ class RoleView(ModelView):
     )
 
 
-class AuthAdmin(ModelView):
+class AuthAdmin(AccessView):
     column_labels = dict(
         name=u'菜单名',
         url=u'链接',

@@ -28,7 +28,7 @@
                         <a href="#" class="dropDown_A">{{ current_user.name }} <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
                             <li><a href="{{url_for( 'home.change_password' )}}" onClick="">修改密码</a></li>
-                            <li><a href="#">退出</a></li>
+                            <li><a href="{{url_for( 'home.logout' )}}">退出</a></li>
                         </ul>
                 </ul>
             </nav>

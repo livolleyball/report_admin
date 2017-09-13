@@ -15,7 +15,7 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'home.login'
 babel = Babel()
-from app.Fadmin import CustomModelView, UserView, RoleView,AuthAdmin,MyHomeView
+from app.Fadmin import AccessView, UserView, RoleView,AuthAdmin,MyHomeView
 # flask_admin = Admin(name=u'后台管理系统')
 flask_admin = Admin(name=u'后台管理系统',index_view=MyHomeView( name='导航栏'),template_mode='bootstrap2')
 
@@ -26,7 +26,7 @@ flask_admin.add_view(AuthAdmin(Auth, db.session,name=u'菜单管理'))
 models = [Userlog,Tree]
 for model in models:
     flask_admin.add_view(
-        CustomModelView(model, db.session, category='Models'))
+        AccessView(model, db.session, category='Models'))
 
 def create_app(config_name):
     app = Flask(__name__)
