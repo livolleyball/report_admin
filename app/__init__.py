@@ -1,12 +1,13 @@
 # coding:utf8
 from flask import Flask
-from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
-from flask_babelex import Babel
-from config import config
 from flask_admin import Admin
-
+from flask_babelex import Babel
+from flask_bootstrap import Bootstrap
+from flask_cache import Cache
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
+
+from config import config
 
 # from app.models import Userlog,User
 bootstrap = Bootstrap()
@@ -15,6 +16,7 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'home.login'
 babel = Babel()
+cache = Cache()
 from app.Fadmin import AccessView, UserView, RoleView,AuthAdmin,MyHomeView
 # flask_admin = Admin(name=u'后台管理系统')
 flask_admin = Admin(name=u'后台管理系统',index_view=MyHomeView( name='导航栏'),template_mode='bootstrap2')
@@ -38,6 +40,7 @@ def create_app(config_name):
     login_manager.init_app(app)
     babel.init_app(app)
     bootstrap.init_app(app)
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     flask_admin.init_app(app)
 
     # flask_admin.add_view(CustomView(name='Custom'))
@@ -46,11 +49,11 @@ def create_app(config_name):
 
 
     from app.home import home as home_blueprint
-    # from app.datatable import datatable as datatable_blueprint
+    from app.datatable import datatable as datatable_blueprint
     from app.echarts import echarts as echarts_blueprint
 
     app.register_blueprint(home_blueprint)
-    # app.register_blueprint(datatable_blueprint,url_prefix="/datatable")
+    app.register_blueprint(datatable_blueprint, url_prefix="/datatable")
     app.register_blueprint(echarts_blueprint, url_prefix="/echarts")
 
     return app

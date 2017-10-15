@@ -1,13 +1,10 @@
-from flask_wtf import FlaskForm
 from flask_admin.form import Select2TagsField, Select2Field
 from flask_admin.form.widgets import Select2TagsWidget
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectMultipleField, RadioField
-from wtforms.validators import DataRequired, Length, Email, equal_to, ValidationError, url
-from wtforms.fields.html5 import URLField, DateField, DateTimeLocalField, EmailField, DecimalField, DateTimeField
-from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
-from wtforms.widgets.html5 import DateInput, DateTimeInput
-from wtforms.widgets import PasswordInput, CheckboxInput, Select, SubmitInput, TextInput
-from app.models import User
+from wtforms.fields.html5 import URLField, DateField, DateTimeField
+from wtforms.validators import DataRequired, Length, Email, equal_to, url
+from wtforms.widgets import TextInput
 
 
 # class SubmitField(BooleanField):
@@ -56,7 +53,7 @@ class Quickwtf(FlaskForm):
                                                              ('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text'),
                                                              ('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
     dt = DateField('date')
-    dt1 = DateTimeField('datetime', widget=DateInput())
+    dt1 = DateTimeField('datetime')
     RadioField = RadioField('RadioField', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
     password = PasswordField('新密码')
     submit = SubmitField('更新密码')

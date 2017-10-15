@@ -1,8 +1,10 @@
 # coding:utf8
 
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from . import db, login_manager
 
 
@@ -52,8 +54,14 @@ class Role(db.Model):  # 角色
     users = db.relationship("User", backref='role')  # 在关系的另一个模型中添加反向引用
     auths = db.relationship("Auth", secondary=role_auth_table)
 
+    def __int__(self, name, nickname, auths):
+        self.name = name
+        self.nickname = nickname
+        self.auths = auths
+
     def __repr__(self):
-        return self.name + self.nickname
+        return self.name + '-' + self.nickname
+
 
 
 # 菜单树结构

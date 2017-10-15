@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block title %}
+发货红包明细
+{% endblock %}
 {% block head %}
 {{ super() }}
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js "></script>
 {% endblock %}
 {% block page_content %}
 <div class="col-md-4">
@@ -14,10 +23,10 @@
 <table id="example" class="display" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th>角色编号</th>
-        <th>角色代码</th>
-        <th>角色名称</th>
-        <th>备注</th>
+        <th>id</th>
+        <th>ownerId</th>
+        <th>serialNo</th>
+        <th>createTime</th>
     </tr>
     </thead>
 
@@ -35,13 +44,28 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8"
-            src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<!--<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>-->
+<!--<script type="text/javascript" charset="utf8"-->
+<!--src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>-->
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#example').DataTable();
+            $('#example').DataTable({
+                dom: 'B<"clear">lfrtip',
+                "buttons": [
+                    {
+                        'extend': 'csvHtml5',
+//                        'title':'文件名',
+                        'text': '导出csv',//定义导出csv按钮的文字
+                        'exportOptions': {
+//                            'modifier': {
+//                                'page': 'current',
+//                                  'columns':[1,2]
+//                            }
+                        }
+                    }
+                ],
+            });
         });
 
     </script>

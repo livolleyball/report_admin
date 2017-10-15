@@ -1,8 +1,13 @@
 # coding:utf8
-from . import echarts
-import sqlite3
 from flask import request, render_template, jsonify, g
+from flask_login import login_required
 
+from test import *
+from . import echarts
+
+
+# conn = sqlite3.connect(os.path.join(basedir, 'data-dev.sqlite'))
+# c = conn.cursor()
 
 # from .forms import SendGoods_listdirect
 
@@ -33,6 +38,7 @@ def query_db(query, args=(), one=False):
 
 
 @echarts.route('/bar_line', methods=["GET", "POST"])
+@login_required
 def bar_line():
     if request.method == "POST":
         res = query_db("select * from weather")
@@ -44,7 +50,9 @@ def bar_line():
 
 
 @echarts.route('/bar1', methods=["GET", "POST"])
+@login_required
 def bar1():
+    print(request.url_rule)
     if request.method == "POST":
         res = query_db("select * from bar1")
         return jsonify(name=[x[1] for x in res],
@@ -54,6 +62,7 @@ def bar1():
 
 
 @echarts.route('/bubble_gradient', methods=["GET", "POST"])
+@login_required
 def bubble_gradient():
     if request.method == "POST":
         res = query_db("SELECT age,population,county,year from bubble_gradient")
@@ -71,6 +80,7 @@ def bubble_gradient():
         return render_template("echarts/bubble_gradient.html")
 
 @echarts.route('/pie', methods=["GET", "POST"])
+@login_required
 def pie():
     list1=[]
     if request.method == "POST":
@@ -90,4 +100,43 @@ def pie():
 @echarts.route('/tree', methods=["GET", "POST"])
 def tree():
     res = query_db("SELECT county,sum(age) amount from bubble_gradient group by county")
-    return jsonify("a")
+    return jsonify('a')
+
+
+@echarts.route('/authMenu', methods=["GET", "POST"])
+def authMenu():
+    rv = query_db('''SELECT  B.id,B.parent_id,B.name,B.url,B.authlevel FROM role_auth A LEFT JOIN
+      auth B ON A.auth_id= B.id
+      WHERE role_id=1''')
+    list = []
+
+    def getall():
+        for i in rv:
+            temp = {"id": str(i[0]), "text": i[2], "href": i[3], 'level': i[4], "pid": str(0 if i[1] is None else i[1])}
+            list.append(temp)
+        return list
+
+    def gettree(date, pid):
+        tree = []
+        for i in date:
+            if i['pid'] == pid:
+                # print(i['pid'],pid)
+                if len(gettree(date, i['id'])) > 0:
+                    if i['level'] == 1:
+                        i['menu'] = gettree(date, i['id'])
+                    else:
+                        i['items'] = gettree(date, i['id'])
+                tree.append(i)
+            else:
+                pass
+        # print(tree)
+        return tree
+
+    def maintree():
+        data = getall()
+        # print(data)
+        return gettree(data, '0')
+        # print(gettree(data, 0))
+        # print(gettree(data, 0))
+
+    return jsonify(maintree())

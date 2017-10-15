@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>表单搜索按纽</title>
+    <!-- 此文件为了显示Demo样式，项目中不需要引入 -->
+    <link href="../../assets/code/demo.css" rel="stylesheet">
+
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/dpl.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/bui.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div class="demo-content">
+
+    <!-- 搜素表单中的按钮 -->
+    <div class="row">
+        <div class="span24 doc-content">
+            <form method="post" class="form-horizontal well">
+                <div class="row">
+                    <div class="control-group span8">
+                        <label class="control-label">{{ form.username.label }}</label>
+                        <div class="controls">
+                            {{ form.username }}
+                        </div>
+                    </div>
+                    <div class="control-group span8">
+                        <label class="control-label">供应商编码：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text">
+                        </div>
+                    </div>
+                    <div class="control-group span8">
+                        <label class="control-label">供应商编码：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text">
+                        </div>
+                    </div>
+                    <div class="control-group span8">
+                        <label class="control-label">供应商编码：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="control-group span8">
+                        <label class="control-label">供应商编码：</label>
+                        <div class="controls">
+                            <input type="text" class="control-text">
+                        </div>
+                    </div>
+                    <div class="form-actions span5 offset3">
+                        <button type="submit" class="button button-primary">搜索</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- script end -->
+</div>
+<div>
+    {{ ms }}
+</div>
+</body>
+</html>

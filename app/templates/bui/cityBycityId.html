@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>表单搜索按纽</title>
+    <!-- 此文件为了显示Demo样式，项目中不需要引入 -->
+    <script src="https://cdn.bootcss.com/jquery/1.10.1/jquery.js"></script>
+    <!--<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.js"></script>-->
+    <!--<link href="../../assets/code/demo.css" rel="stylesheet">-->
+
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/dpl.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/bui.css" rel="stylesheet">
+
+
+</head>
+<body>
+<div class="demo-content">
+
+    <!-- 搜素表单中的按钮 -->
+
+
+    <form class="form-inline definewidth m20" action='' method="POST">
+        <table cellpadding="3">
+            <tr>
+                <td align="right">
+                    &nbsp;省：
+                </td>
+                <td>
+                    <select id="province" onchange="getCity(this.value)">
+                        <option value="0">全选</option>
+                    </select>
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;市：
+                </td>
+
+                <td>
+                    <select id="city" name="city">
+                        <option selected="selected">请选择</option>
+                    </select>
+                </td>
+                <td style="text-align:center;" colspan="8">
+                    <input type="submit" value="查询">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+
+    <!-- script end -->
+</div>
+<div>
+    {{ data }}
+</div>
+<script>
+    $(function () {
+        getCityData('/datatable/city1', "province");
+    })
+    function getCity(val) {
+        getCityData('/datatable/city2/' + val, 'city');
+    }
+    function getCityData(url, selectId) {
+        $.getJSON(url, function (data, textStatus) {
+            var content = '';
+            console.log(data);
+            console.log(data.city[1])
+            $.each(data.city, function (i, item) {
+                content += '<option value=' + item[0] + '>' + item[1] + '</option>'
+            });
+            $('#' + selectId).get(0).options.length = 1;
+            $('#' + selectId).append(content)
+
+        })
+
+    }
+</script>
+</body>
+
+</html>

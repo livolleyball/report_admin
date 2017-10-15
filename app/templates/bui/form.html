@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>表单搜索按纽</title>
+    <!-- 此文件为了显示Demo样式，项目中不需要引入 -->
+    <link href="../../assets/code/demo.css" rel="stylesheet">
+
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/dpl.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/bui.css" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/multiple-select.css') }}" rel="stylesheet">
+
+</head>
+<body>
+<div class="demo-content">
+
+    <!-- 搜素表单中的按钮 -->
+
+
+    <form id="S_Form" class="form-inline definewidth m20" method="POST">
+        <table cellpadding="3">
+            <tr>
+                <td align="right">
+                    &nbsp;{{ form.username.label }}:
+                </td>
+                <td>
+                    {{ form.username }}
+                </td>
+                <td align="right">
+                    &nbsp;{{ form.dt.label }}：
+                </td>
+                <td>
+                    {{ form.dt }}
+                </td>
+
+                <td align="right">
+                    &nbsp;{{ form.SelectMultipleField.label}}：
+                </td>
+                <td>
+                    {{ form.SelectMultipleField }}
+                </td>
+                <td align="right">
+                    {{ form.select.label }}：
+                </td>
+                <td>
+                    {{ form.select }}
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    &nbsp;商户ID：
+                </td>
+                <td>
+                    <input type="text" name="MerchantId" id="MerchantId" maxlength="11" class="abc input-default"
+                           onkeydown="keyDownOnlyNum()" onkeyup="onlyNum(this)">
+                </td>
+
+                <td align="right">
+                    &nbsp;{{ form.optSelectMultipleField.label}}：
+                </td>
+                <td>
+                    {{ form.optSelectMultipleField }}
+                </td>
+
+                <td align="right">
+                    &nbsp;创建时间：
+                </td>
+                <td>
+                    <input type="text" name="createBegTime" class="calendar" id="createBegTime">
+                    - <input type="text" name="createEndTime" class="calendar" id="createEndTime">
+                </td>
+                <td align="right">
+                    &nbsp;&nbsp;BillNo：
+                </td>
+                <td>
+                    <input type="text" name="BillNo" id="BillNo" maxlength="32" class="abc input-default"
+                           placeholder="">
+                </td>
+            </tr>
+            <tr>
+
+
+                <td align="right">
+                    支付下家：
+                </td>
+                <td>
+                    <select id="sellId" name="sellId">
+                        <option value="-10">全部</option>
+                        <option value="1">银联</option>
+                        <option value="2">易宝</option>
+                        <option value="3">闪电贷支付</option>
+                        <option value="5">通联支付</option>
+                    </select>
+                </td>
+                <td align="right">
+                    &nbsp;银行卡号：
+                </td>
+                <td>
+                    <input type="text" name="bankCardNo" id="bankCardNo" maxlength="32" class="abc input-default"
+                           onkeydown="keyDownOnlyNum()" onkeyup="onlyNum(this)">
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;省市：
+                </td>
+                <td>
+                    <input type="text" name="finishBegTime" class="calendar" id="finishBegTime">
+                    - <input type="text" name="finishEndTime" class="calendar" id="finishEndTime">
+                </td>
+                <td style="text-align:center;" colspan="8">
+                    {{ form.submit }}
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div class="detail-section">
+        <div id="s1">
+            <input type="hidden" id="hide" value="" name="hide">
+        </div>
+    </div>
+
+    <!-- script end -->
+</div>
+<div>
+    {{ ms }}
+</div>
+<script src="http://g.tbcdn.cn/fi/bui/jquery-1.8.1.min.js"></script>
+<script src="{{ url_for('static',filename='js/multiple-select.js') }}"></script>
+<!--<link href="{{ url_for('static',filename='css/multiple-select.css') }}" rel="stylesheet">-->
+<script src="http://g.alicdn.com/bui/seajs/2.3.0/sea.js"></script>
+<script src="http://g.alicdn.com/bui/bui/1.1.21/config.js"></script>
+<script>
+    BUI.use('bui/select', function (Select) {
+        var items = [
+                {text: '选项1', value: 'a'},
+                {text: '选项2', value: 'b'},
+                {text: '选项3', value: 'c'}
+            ],
+            select = new Select.Select({
+                render: '#s1',
+                valueField: '#hide',
+                multipleSelect: true,
+                items: items
+            });
+        select.render();
+
+    })
+</script>
+<script>
+    $(function () {
+        $('#SelectMultipleField').change(function () {
+            console.log($(this).val());
+        }).multipleSelect({
+            width: '100%'
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('#optSelectMultipleField').change(function () {
+            console.log($(this).val());
+        }).multipleSelect({
+            width: '100%'
+        });
+    });
+</script>
+</body>
+</html>

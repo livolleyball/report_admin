@@ -1,10 +1,10 @@
 # coding:utf8
-from flask import render_template, redirect, url_for, request,flash
-from flask_admin import BaseView, expose, AdminIndexView
+from flask import redirect, url_for, flash, request
+from flask_admin import expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
-from wtforms import StringField, PasswordField
-from wtforms.validators import DataRequired, Length, Email, equal_to, ValidationError, url
-from flask_login import current_user,login_required
+from flask_login import current_user, login_required
+from wtforms.validators import DataRequired, Email
+
 from app.models import Auth
 
 
@@ -19,7 +19,7 @@ class MyHomeView(AdminIndexView):
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
         flash('admin 后台只对管理员开放')
-        return redirect(url_for('home.login'))
+        return redirect(url_for('home.login', next=request.url))
 
     @expose('/')
     @login_required
@@ -104,7 +104,8 @@ class AuthAdmin(AccessView):
     )
 
     form_args = dict(
-        url=dict(label='链接', validators=[DataRequired(), url()]),
+        # url=dict(label='链接', validators=[DataRequired(), url()]),
+        url=dict(label='链接', validators=[DataRequired()]),
         parent=dict(label='父菜单')
     )
     can_set_page_size = True
@@ -125,5 +126,5 @@ class AuthAdmin(AccessView):
 
     def _get_parent_list(self):
         # only show available pets in the form
-        return Auth.query.filter_by(authlevel = 1).all()
+        return Auth.query.filter(Auth.authlevel < 3).all()
         # return Auth.query.all()

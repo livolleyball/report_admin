@@ -47,3 +47,6 @@ config = {
 
     'default': DevelopmentConfig
 }
+
+class SqliteConnection():
+    pass

@@ -7,6 +7,7 @@ from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+# 如果已经定义了环境变量 'FLASK_CONFIG'，则从中读取配置名，否则使用默认配置
 manager = Manager(app)
 migrate = Migrate(app, db)
 

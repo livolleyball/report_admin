@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>表单搜索按纽</title>
+    <!-- 此文件为了显示Demo样式，项目中不需要引入 -->
+    <script src="https://cdn.bootcss.com/jquery/1.10.1/jquery.js"></script>
+    <!--<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.js"></script>-->
+    <!--<link href="../../assets/code/demo.css" rel="stylesheet">-->
+    <script src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/dpl.css" rel="stylesheet">
+    <link href="http://g.alicdn.com/bui/bui/1.1.21/css/default/bui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+
+</head>
+<body>
+<div class="demo-content">
+
+    <!-- 搜素表单中的按钮 -->
+
+
+    <form class="form-inline definewidth m20" action='' method="POST">
+        <table cellpadding="3">
+            <tr>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.starttime.label}}:
+                </td>
+
+                <td>
+                    {{ form.starttime }}
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.endtime.label}}:
+                </td>
+
+                <td>
+                    {{ form.endtime }}
+                </td>
+                <td align="right">
+                    &nbsp;{{ form.province.label}}：
+                </td>
+                <td>
+                    {{ form.province }}
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.city.label}}：：
+                </td>
+
+                <td>
+                    {{ form.city }}
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.mobile1.label}}：：
+                </td>
+
+                <td>
+                    {{ form.mobile1 }}
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.mobile2.label}}：：
+                </td>
+
+                <td>
+                    {{ form.mobile2 }}
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.authstarttime.label}}:
+                </td>
+
+                <td>
+                    {{ form.authstarttime }}
+                </td>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.authendtime.label}}:
+                </td>
+
+                <td>
+                    {{ form.authendtime }}
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">
+                    &nbsp;{{ form.classify.label}}:
+                </td>
+
+                <td>
+                    {{ form.classify }}
+                </td>
+
+                <td style="text-align:center;" colspan="8">
+                    {{ form.submit }}
+                </td>
+            </tr>
+        </table>
+    </form>
+
+
+    <!-- script end -->
+</div>
+<div>
+    <table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>所在区域</th>
+            <th>经度</th>
+            <th>纬度</th>
+            <th>备注</th>
+            <th>创建人</th>
+            <th>创建人手机号</th>
+            <th>服务站名称</th>
+            <th>服务站用户</th>
+            <th>服务站手机号</th>
+            <th>注册时间</th>
+            <th>详细地址</th>
+            <th>主营业务</th>
+            <th>审核备注</th>
+            <th>最后一次审核时间</th>
+            <th>提交次数</th>
+            <th>是否开通</th>
+        </tr>
+        </thead>
+
+        {% for v in data %}
+        <tr>
+            <td>{{ v[0] }}</td>
+            <td>{{ v[1] }}</td>
+            <td>{{ v[2] }}</td>
+            <td>{{ v[3] }}</td>
+            <td>{{ v[4] }}</td>
+            <td>{{ v[5] }}</td>
+            <td>{{ v[6] }}</td>
+            <td>{{ v[7] }}</td>
+            <td>{{ v[8] }}</td>
+            <td>{{ v[9] }}</td>
+            <td>{{ v[10] }}</td>
+            <td>{{ v[11] }}</td>
+            <td>{{ v[12] }}</td>
+            <td>{{ v[13] }}</td>
+            <td>{{ v[14] }}</td>
+            <td>{{ v[15] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+<script>
+    $(function () {
+        getCityData('/datatable/city1', "province");
+    })
+    function getCity(val) {
+        getCityData('/datatable/city2/' + val, 'city');
+    }
+    function getCityData(url, selectId) {
+        $.getJSON(url, function (data, textStatus) {
+            var content = '';
+            console.log(data);
+            console.log(data.city[1])
+            $.each(data.city, function (i, item) {
+                content += '<option value=' + item[0] + '>' + item[1] + '</option>'
+            });
+            $('#' + selectId).get(0).options.length = 1;
+            $('#' + selectId).append(content)
+
+        })
+
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+
+</script>
+</body>
+
+</html>
